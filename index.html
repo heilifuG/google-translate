@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <meta name='viewport' content='width=device-width,user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+    <meta name='format-detection' content='telephone=no, email=no,date=no,address=no' />
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+    <meta name='apple-mobile-web-app-capable' content='yes' />
+    <title></title>
+</head>
+<style>
+    html,
+    body,
+    webview {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    webview {
+        box-sizing: border-box;
+    }
+
+    .touch {
+        height: 45px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+    }
+
+    .min,
+    .close {
+        color: #757575;
+        font-size: 35px;
+        position: fixed;
+        font-weight: 1000;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        -webkit-app-region: no-drag;
+        cursor: pointer;
+    }
+
+    .min {
+        top: 3px;
+        right: 60px;
+        line-height: 29px;
+    }
+
+    .close {
+        top: 3px;
+        right: 10px;
+        transform: rotate(45deg);
+    }
+</style>
+
+<body onmousemove='' ontouchstart=''>
+    <div class="touch" id="move"></div>
+    <div class="min">-</div>
+    <div class="close">+</div>
+    <webview src="https://translate.google.cn/#view=home&op=translate&sl=auto&tl=zh-CN"></webview>
+</body>
+<script>
+    const {
+        ipcRenderer
+    } = require('electron')
+    onload = () => {
+        const webview = document.querySelector('webview')
+        webview.addEventListener('dom-ready', () => {
+            webview.insertCSS(
+                '.gb_Ee.gb_He{display:none !important;}.gb_zc{display:none !important;}.gb_ad{display:none !important;}.frame::-webkit-scrollbar{width:0px !important;}.input-button-container{display:none !important;}.app-download-bar{display:none !important;}.gb_Wa:not(.gb_Xa) .gb_7d{padding:0 !important;}'
+            )
+        })
+        document.querySelector('.min').addEventListener('click', () => {
+            ipcRenderer.send('async', 'min')
+        })
+        document.querySelector('.close').addEventListener('click', () => {
+            ipcRenderer.send('async', 'close')
+        })
+    }
+</script>
+
+</html>
